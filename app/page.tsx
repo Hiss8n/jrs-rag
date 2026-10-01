@@ -1,202 +1,63 @@
 "use client";
 
-import { useState } from "react";
+import { role } from "@prisma/orm-postgres/contract-builder";
+import axios from "axios";
+import { ScrollBehavior } from "next/dist/client/components/router-reducer/router-reducer-types";
+import {  useEffect, useRef, useState, type KeyboardEvent } from "react";
 
+interface Message {
+  role: 'assistant' | 'user' | 'system'; // Restricts role to valid values
+  content: string;
+}
 
 export default function Home() {
+
+  const messageRef=useRef(null)
+
+ 
   const [isOpen,setIsOpen]=useState(false)
 
-  const messages = [
-  {
-    id: 1,
-    sender: "John",
-    message: "Hey, how are you?",
-    time: "09:01"
-  },
-  {
-    id: 2,
-    sender: "Jane",
-    message: "I'm good. How about you?",
-    time: "09:02"
-  },
-  {
-    id: 3,
-    sender: "John",
-    message: "I'm doing great.",
-    time: "09:03"
-  },
-  {
-    id: 4,
-    sender: "Jane",
-    message: "What are you working on today?",
-    time: "09:04"
-  },
-  {
-    id: 5,
-    sender: "John",
-    message: "I'm working on a JavaScript project.",
-    time: "09:05"
-  },
-  {
-    id: 6,
-    sender: "Jane",
-    message: "That sounds interesting.",
-    time: "09:06"
-  },
-  {
-    id: 7,
-    sender: "John",
-    message: "Yes, I'm learning about arrays.",
-    time: "09:07"
-  },
-  {
-    id: 8,
-    sender: "Jane",
-    message: "Arrays are very useful.",
-    time: "09:08"
-  },
-  {
-    id: 9,
-    sender: "John",
-    message: "I'm also learning DOM manipulation.",
-    time: "09:09"
-  },
-  {
-    id: 10,
-    sender: "Jane",
-    message: "Great! DOM manipulation is important.",
-    time: "09:10"
-  },
-  {
-    id: 11,
-    sender: "John",
-    message: "I'm going to build a chat application.",
-    time: "09:11"
-  },
-  {
-    id: 12,
-    sender: "Jane",
-    message: "Will it have real-time messages?",
-    time: "09:12"
-  },
-  {
-    id: 13,
-    sender: "John",
-    message: "Yes, eventually.",
-    time: "09:13"
-  },
-  {
-    id: 14,
-    sender: "Jane",
-    message: "You could use Socket.IO.",
-    time: "09:14"
-  },
-  {
-    id: 15,
-    sender: "John",
-    message: "That's a good idea.",
-    time: "09:15"
-  },
-  {
-    id: 16,
-    sender: "Jane",
-    message: "Are you using React?",
-    time: "09:16"
-  },
-  {
-    id: 17,
-    sender: "John",
-    message: "For now, I'm using plain JavaScript.",
-    time: "09:17"
-  },
-  {
-    id: 18,
-    sender: "Jane",
-    message: "That is a good way to understand the basics.",
-    time: "09:18"
-  },
-  {
-    id: 19,
-    sender: "John",
-    message: "Exactly.",
-    time: "09:19"
-  },
-  {
-    id: 20,
-    sender: "Jane",
-    message: "How are you storing the messages?",
-    time: "09:20"
-  },
-  {
-    id: 21,
-    sender: "John",
-    message: "Currently, I'm storing them in an array.",
-    time: "09:21"
-  },
-  {
-    id: 22,
-    sender: "Jane",
-    message: "You can later connect it to a database.",
-    time: "09:22"
-  },
-  {
-    id: 23,
-    sender: "John",
-    message: "Maybe MongoDB.",
-    time: "09:23"
-  },
-  {
-    id: 24,
-    sender: "Jane",
-    message: "MongoDB would work well.",
-    time: "09:24"
-  },
-  {
-    id: 25,
-    sender: "John",
-    message: "I have used MongoDB before.",
-    time: "09:25"
-  },
-  {
-    id: 26,
-    sender: "Jane",
-    message: "Then you already have a good start.",
-    time: "09:26"
-  },
-  {
-    id: 27,
-    sender: "John",
-    message: "I also want to add message timestamps.",
-    time: "09:27"
-  },
-  {
-    id: 28,
-    sender: "Jane",
-    message: "That will make the chat look more realistic.",
-    time: "09:28"
-  },
-  {
-    id: 29,
-    sender: "John",
-    message: "Yes, and I want to add user avatars too.",
-    time: "09:29"
-  },
-  {
-    id: 30,
-    sender: "Jane",
-    message: "Nice! Keep building it.",
-    time: "09:30"
-  }
-];
-const handleChatBot=()=>{
+  const [userInput,setUserInput]=useState("")
+  const [messeges,setMesseges]= useState<Message[]>([])
+
+  const fetchMessage = async (query: string) => {
+    const res = await axios.post("/api/chat", { query });
+    console.log("Ans:",res.data)
+    return res.data;
+  };
+
+  const handleChatBot=()=>{
   console.log("clikced")
   setIsOpen((prev)=>!prev)
 
 }
-  const sendMessage=()=>{
-    console.log("mesage send")
-  }
+  
+  const handleChatMessaging = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (userInput.trim() === "") return;
 
+    if (e.key === "Enter" && userInput.trim() !== "") {
+       console.log("Messages:",messeges);
+       setMesseges((prev)=>[...prev,{role:"user",content:userInput.trim()}])
+      const answer = await fetchMessage(userInput.trim());
+        setUserInput("");
+      setMesseges((prev) => [
+        ...prev,
+        { role: "assistant", content: answer }
+      ]);
+    /*   setUserInput(""); */
+    }
+  };
+
+   useEffect(()=>{
+    const scrollToBottom=()=>{
+      messageRef.current?.scrollIntoView({behavior:'smooth'})
+    }
+
+    scrollToBottom()
+
+  },[messeges,userInput])
+
+ 
   return (
     <div className="relative  h-160 w-screen flex-col bg-[45deg,rgba(30,0,0,0.8),rgba(30,0,0,0.8)] font-sans bg-[url('/background.jpg')] bg-cover inset-0 bg-blend-multiply ">
       <header className="flex max-h-full justify-center gap-4">
@@ -231,17 +92,24 @@ const handleChatBot=()=>{
           <h2 className="text-xl text-amber-400 font-bold text-start ml-2  mt-0.5 pt-2">Zara-CHATBOT</h2>
           <button onClick={handleChatBot} className={`${!isOpen?"hidden":""} mr-4 text-red-600 font-bold`}>X</button>
          </div> 
-          <ul className='mx-2 bg-transparent h-96 mt-2 overflow-y-auto [scrollbar-none] [&::-webkit-scrollbar]:hidden'>
-        {messages.map((msg,id) => (
-          <li key={id} style={{ marginBottom: '1rem' }}>
-           {/*  <strong>{msg.question}</strong> */}
-           <div className="flex items-`${end}`"> <p >{msg.message}</p></div>
-           
-          </li>
-        ))}
+          <ul className='mx-2  h-96 mt-2 overflow-y-auto [scrollbar-none] [&::-webkit-scrollbar]:hidden  bg-transparent'>
+
+              {(messeges.length < 1
+                ? [{ role: "assistant", content: "Hi👋🏻, ask me anything about Digipass. I can answer any question from our faqs" }] 
+                : messeges
+              ).map((msg, id) => (
+                <li key={id}  className={`flex mb-2 ${msg.role==='user'?'justify-end':'justify-items-end'}`}>
+                  <div className={`flex flex-col-reverse ${msg.role==='user'?'justify-end':'justify-items-start'} w-[60%] h-[50%] ${msg.role==='user'?' bg-blue-500':'bg-slate-300'} rounded-t-lg ${msg.role==='user'?'rounded-bl-lg':'rounded-br-lg'}`}>
+                    <p className="text-md text-gray-700 p-1">{msg.content} </p>
+                  </div>
+                </li>
+              ))}
+               <div ref={messageRef}/>
+
            </ul>
+          
   
-          <div className='w-full flex flex-col mt-3 items-center bg-amber-300  relative'>
+          <div className='w-full flex flex-col mt-3 items-center bg-slate-700  relative'>
 
 {/* 
             <div className="w-96 mt-20 flex-1 flex relative bg-black">  */}
@@ -250,11 +118,14 @@ const handleChatBot=()=>{
               type="text"
               id="question"
               name="question"
+              value={userInput}
               placeholder="chat ..."
+              onChange={(e)=>setUserInput(e.target.value)}
+              onKeyDown={(e)=>handleChatMessaging(e) }
               required
-              className='focus:outline-none focus:ring-0 focus:ring-offset-0  text-amber-400 bg-slate-400 px-6 py-2 rounded-b-lg  w-88 overflow-hidden absolute mx-4  mb-3 border-0 focus:border-0 sm:px-1'
+              className='focus:outline-none focus:ring-0 focus:ring-offset-0  text-slate-700 bg-slate-100 px-6 py-2 rounded-b-lg overflow-hidden absolute w-88  mx-4  mb-3 border-0 focus:border-0 sm:px-1'
             />
-            <button type="submit" className='px-2 py-1  text-amber-400  right-0  absolute '>
+            <button type="submit" className='px-2 py-1  text-blue-600  right-0  absolute ' onClick={()=>{handleChatMessaging}}>
             send
           </button>
       {/*     </div> */}
