@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI CHATBOT",
+  title: "Zara-Chatbot",
   description: "AI agent development",
   icons:{
     icon:"/7.svg"

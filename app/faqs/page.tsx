@@ -9,51 +9,50 @@ const faqs = await prisma.fAQ.findMany()
 
 
   return (
-    <main className='container flex flex-col justify-between mx-auto bg-blue-slate-400 items-center space-x-1 h-screen'>
-      <h1 className="text-center text-gray-900 text-2xl font-mono mt-2">ADMIN DASHBOARD</h1>
-     <div  className='container flex  justify-between mx-auto bg-blue-slate-400 items-center space-x-1 h-screen'>
-      <section className='flex flex-col max-w-2xl h-96 mx-4 items-center justify-center rounded-md shadow'>
-      <h1 className='text-center text-shadow-blue-500 text-blue-500 text-2xl font-mono mt-2'>Add  Data</h1>
+    <main className='mx-auto flex min-h-screen w-full max-w-7xl flex-col bg-slate-100 px-4 py-6 text-slate-900 sm:px-6 lg:px-8'>
+      <h1 className="mt-2 text-center font-mono text-2xl font-bold sm:text-3xl">ADMIN DASHBOARD</h1>
+     <div className='mx-auto mt-6 grid w-full grid-cols-1 gap-6 md:mt-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]'>
+      <section className='flex min-w-0 flex-col rounded-md bg-white p-4 shadow-sm sm:p-6'>
+      <h2 className='mt-1 text-center font-mono text-2xl font-semibold text-blue-600'>Add Data</h2>
       {/* Form submitting to the Server Action */}
-      <form action={createFAQ} className='max-w-full h-full m-3 flex flex-col gap-4'>
-        <div className='max-w-full flex flex-col gap-0.5 space-x-2'>
+      <form action={createFAQ} className='mt-4 flex w-full flex-col gap-4'>
+        <div className='flex w-full flex-col gap-1'>
           <label htmlFor="question">Question:</label>
           <input
             type="text"
             id="question"
             name="question"
             required
-            className='border-slate-100 rounded-sm border-2 focus:border-amber-300 p-2 text-gray-900'
+            className='w-full rounded-sm border-2 border-slate-200 p-3 text-slate-900 focus:border-amber-400 focus:outline-none'
           />
         </div>
 
-        <div>
+        <div className='flex flex-col gap-1'>
           <label htmlFor="answer">Answer:</label>
           <textarea
             id="answer"
             name="answer"
             required
             rows={4}
-            className='w-full border-2 p-3 focus:border-amber-300  border-slate-100 rounded-sm overflow-hidden resize-none'
+            className='w-full resize-y rounded-sm border-2 border-slate-200 p-3 text-slate-900 focus:border-amber-400 focus:outline-none'
           
           />
         </div>
 
-        <button type="submit" style={{ padding: '10px 16px', cursor: 'pointer' }} className='px-12 py-4 bg-green-700 text-taupe-300 text-xl rounded-md focus:
-        focus:bg-green-600 transition-colors '>
+        <button type="submit" className='w-full rounded-md bg-green-700 px-6 py-3 text-lg font-semibold text-white transition-colors hover:bg-green-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700 sm:w-auto'>
           Save FAQ
         </button>
       </form>
      </section>
 
-    <section className='w-4xl h-96  mx-4 rounded-sm grid items-center mt-0.5 grid-cols-1'>
+    <section className='flex min-h-72 min-w-0 flex-col rounded-md bg-white p-4 shadow-sm sm:p-6'>
 
-      <h2 className='text-2xl align-text-top text-center my-1.5'>Existing FAQs</h2>
-      <ul className='w-full h-96 ml-4 overflow-y-auto'>
+      <h2 className='my-1.5 text-center text-2xl font-semibold'>Existing FAQs</h2>
+      <ul className='mt-3 max-h-[60vh] w-full space-y-4 overflow-y-auto pr-2 md:max-h-144'>
         {faqs.map((faq) => (
-          <li key={faq.id} style={{ marginBottom: '1rem' }}>
-            <strong>{faq.question}</strong>
-            <p>{faq.answer}</p>
+          <li key={faq.id} className='border-b border-slate-200 pb-4 last:border-b-0'>
+            <strong className='block wrap-break-word'>{faq.question}</strong>
+            <p className='mt-1 whitespace-pre-wrap wrap-break-word text-slate-700'>{faq.answer}</p>
           </li>
         ))}
       </ul>

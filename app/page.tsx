@@ -91,7 +91,7 @@ const WORDS = ["Digital Inclusion", "Education", "Mental Health & Psychosocial S
           <li>About</li>
           <li>Refugee Services</li>
           <li>Contact Us</li>
-          <Link href={"/faqs"} className="px-4 py-1 bg-amber-500 text-white font-bold rounded-md border border-amber-50"><li>Admin Page</li></Link>
+          <Link href={"/"} className="px-4 py-1 bg-amber-500 text-white font-bold rounded-md border border-amber-50"><li>Admin Page</li></Link>
         </ul>
         <hr className="my-4 border-t border-gray-300" />
 
