@@ -10,6 +10,11 @@ interface Message {
 
 export default function Home() {
 
+const WORDS = ["Digital Inclusion", "Education", "Mental Health & Psychosocial Support (MHPSS)","Livelihoods & Economic Inclusion","Advocacy & Protection"];
+
+  const [index, setIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+
   const messageRef=useRef(null)
 
  
@@ -60,29 +65,48 @@ export default function Home() {
 
   },[messeges,userInput])
 
+
+  useEffect(() => {
+    // Change word every 4 seconds
+    const interval = setInterval(() => {
+      // Trigger fade out
+      setFade(false);
+
+      // Wait 300ms for fade-out animation to complete, then switch text and fade in
+      setTimeout(() => {
+        setIndex((prevIndex) => (prevIndex + 1) % WORDS.length);
+        setFade(true);
+      }, 300);
+    }, 300);
+
+    return () => clearInterval(interval);
+  }, []);
+
  
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-[linear-gradient(to_top_right,rgba(15,23,42,0.48),rgba(34,211,238,0.38)_55%,rgba(224,242,254,0.48)),url('/background.jpg')] bg-cover font-sans inset-0">
-      <header className="flex w-full justify-center px-4">
-        <ul className="flex min-h-20 w-full max-w-5xl flex-wrap items-center justify-center gap-x-4 gap-y-2 py-3 text-sm sm:gap-6 sm:text-base">
+    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-[linear-gradient(to_top_right,rgba(7,26,70,0.88)_0%,rgba(7,26,70,0.72)_38%,rgba(34,211,238,0.72)_58%,rgba(255,255,255,0.72)_80%,rgba(230,250,250,0.58)_100%),url('/background.jpg')] bg-cover font-sans inset-0">
+      <header className="flex w-full h-24 justify-center">
+        <ul className="flex min-h-12 w-full max-w-5xl flex-wrap items-center justify-center gap-x-4 gap-y-1 py-2 text-lg sm:gap-6 sm:text-base border-b border-slate-200 pb-1">
           <li className="text-amber-500 text-xl border rounded-2xl px-3 py-1 font-bold">JRS DIGITAL</li>
           <li>About</li>
           <li>Refugee Services</li>
           <li>Contact Us</li>
           <Link href={"/faqs"} className="px-4 py-1 bg-amber-500 text-white font-bold rounded-md border border-amber-50"><li>Admin Page</li></Link>
         </ul>
+        <hr className="my-4 border-t border-gray-300" />
+
       </header>
    <div className="flex flex-1 flex-col items-start justify-center gap-8 px-4 py-8 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:gap-4"> 
     <div className="w-full max-w-6xl"> 
       <section className="mx-0 max-w-4xl sm:mx-4">
-        <h2 className="my-6 text-3xl font-extrabold sm:my-10 sm:text-4xl lg:text-5xl">Building the Digital Generation</h2>
-        <span className="text-2xl font-medium text-amber-500 sm:text-3xl">Digital Inclusion</span>
+        <h2 className="my-6 text-3xl font-extrabold sm:my-10 sm:text-4xl lg:text-5xl text-white ">Building the Digital Generation</h2>
+        <span className={`text-2xl font-medium text-amber-500 sm:text-3xl animate-pulse transition-opacity duration-300 ease-in-out ${fade?"opacity-100":"opacity-0"}`}>{WORDS[index]}</span>
       </section>
       <section className="mt-6 sm:mx-4">
-        <p className="mx-0 font-mono text-xl text-slate-900 sm:mx-4 sm:text-2xl">The start of a journey start with one step</p>
+        <p className="mx-0 font-mono text-xl text-slate-200 sm:mx-4 sm:text-2xl">The start of a journey start with one step</p>
         <div className="mt-4 flex flex-col items-stretch gap-3 sm:mx-4 sm:flex-row sm:items-center">
            <button className="rounded-3xl border border-slate-200 bg-amber-500 px-8 py-3 text-xl text-taupe-100 sm:px-12 sm:text-2xl">Get in touch</button>
-        <button className="rounded-3xl border border-slate-800 px-8 py-3 text-xl text-slate-950 sm:px-12 sm:text-2xl">Get in touch</button>
+        <button className="rounded-3xl border border-slate-100 px-8 py-3 text-xl text-slate-100 sm:px-12 sm:text-2xl">Get in touch</button>
       
         </div>
        
@@ -150,9 +174,9 @@ export default function Home() {
 
       </div>
 
-      <div  className={`fixed bottom-6 right-6 z-40 flex h-16 w-16 ${isOpen ? "hidden" : ""} cursor-pointer items-center justify-center rounded-full bg-blue-400 shadow-lg`}> 
+      <div  className={`fixed bottom-6 right-6 z-40 flex h-16 w-16 ${isOpen ? "hidden" : ""} cursor-pointer items-center justify-center rounded-full bg-amber-500 shadow-lg animate-bounce`}> 
      {/*  <div className="flex  rounded-full w-15 h-15 mr-8 bg-blue-400 items-center justify-center top-50 relative cursor-pointer animate-pulse"> */}
-        <button onClick={handleChatBot} className={`${isOpen?"hidden":""}`}>CHAT</button>
+        <button onClick={handleChatBot} className={`${isOpen?"hidden":""} text-white font-medium `}>CHAT</button>
    {/*    </div> */}
         </div>
         
