@@ -25,13 +25,16 @@ export const metadata: Metadata = {
 
 
 
-if (process.env.NODE_ENV === 'development' && typeof window === 'undefined') {
+/* if (process.env.NODE_ENV !== 'development') {
   // Guard with global check to prevent duplicate cron jobs during Next.js Hot Module Reloading (HMR)
-  if (!(global as any).__cronStarted) {
+     if ((!global as any).__cronStarted) {
     (global as any).__cronStarted = true;
-    jobs()
-  }
-}
+   
+  } 
+  jobs()
+ 
+  
+} */
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
