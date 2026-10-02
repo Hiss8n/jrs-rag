@@ -77,7 +77,7 @@ const WORDS = ["Digital Inclusion", "Education", "Mental Health & Psychosocial S
         setIndex((prevIndex) => (prevIndex + 1) % WORDS.length);
         setFade(true);
       }, 300);
-    }, 300);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);

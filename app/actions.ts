@@ -20,7 +20,6 @@ export async function createFAQ(formData: FormData) {
     const vectorString= await createEmbeddings(text);
     const vector =vectorString && vectorString.length > 0 ? `[${vectorString.join(",")}]`: null;
 
-    console.log("VEC:",vector)
 
   // Insert data into PostgreSQL using 
   await prisma.$executeRaw`
