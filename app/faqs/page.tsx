@@ -13,7 +13,7 @@ const faqs = await prisma.fAQ.findMany()
       <h1 className="text-center text-gray-900 text-2xl font-mono mt-2">ADMIN DASHBOARD</h1>
      <div  className='container flex  justify-between mx-auto bg-blue-slate-400 items-center space-x-1 h-screen'>
       <section className='flex flex-col max-w-2xl h-96 mx-4 items-center justify-center rounded-md shadow'>
-      <h1 className='text-center text-gray-950/45 text-2xl font-mono mt-2'>Add  FAQs</h1>
+      <h1 className='text-center text-shadow-blue-500 text-blue-500 text-2xl font-mono mt-2'>Add  Data</h1>
       {/* Form submitting to the Server Action */}
       <form action={createFAQ} className='max-w-full h-full m-3 flex flex-col gap-4'>
         <div className='max-w-full flex flex-col gap-0.5 space-x-2'>
