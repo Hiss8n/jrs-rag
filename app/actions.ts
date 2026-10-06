@@ -32,15 +32,5 @@ export async function createFAQ(formData: FormData) {
   )
   
   `
-
-/*   await prisma.fAQ.create({
-    data: {
-     question,
-      answer,
-      embeddings:vector ?? null 
-    }, 
-  }) */
-
-  // Refresh page data cache so the new item displays immediately
   revalidatePath('/faqs')
 }

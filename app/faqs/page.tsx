@@ -5,7 +5,9 @@ import { createFAQ } from '@/app/actions'
 
 export default async function FAQsPage() {
   // Fetch existing items to display on the page
-const faqs = await prisma.fAQ.findMany() 
+const faqs = await prisma.fAQ.findMany({
+  /* sortedbyDESC */
+}) 
 
 
   return (
